@@ -19,9 +19,31 @@
             </style>
         @endif
     </head>
-    <x-search/>
-    <body class="bg-gray-300 text-center">
-        <h1 class="text-sky-400">All video</h1>
-         <x-addvideo/>
+   
+    <body class=" text-center bg-linear-360  from-purple-300  to-purple-600 bg-no-repeat h-fit w-full">
+       <div>
+        <div class="w-full h-20 fixed top-0 left-0 justify-center items-center shadow-2xs backdrop-blur-2xl ">
+      <button class="bg-purple-500 px-4 py-2 rounded-md cursor-pointer text-white justify-center mt-5 shadow-white hover:shadow-[0px_0px_10px_white]"> <a href="/add" class=" decoration-0">+ create</a></button>
+</div>
+       </div>
+        <div class="flex justify-between gap-4 h-fit items-center w-full  flex-wrap pb-36 mt-24">
+            @foreach ($all as $video)   
+            <div class=" py-6 px-6 hover:shadow rounded-xl hover:bg-linear-150 from-purple-200 to-purple-500">  
+                <video  src="{{asset('storage/'.$video->file_path)}}" controls loop class=" rounded-xl  h-[30vh] w-fit-content bg-black"></video>
+                <p class="pt-3 font-bold text-xl">{{$video->title}}</p>
+                <p class="p-3">{{$video->description}}</p>
+                <div class="flex justify-center gap-x-3">
+                 <button class=" px-3 py-2 bg-purple-500 rounded-xl"><a href="{{URL('video/update/').'/'.$video->id }}" class=" decoration-0">update</a></button>
+                        <form action="{{URL('video/delete',$video->id)}}" method="post" onsubmit="return confirm('are you sure you want to delete this video')">
+                            @csrf
+                            @method('delete')
+                             <button class=" px-3 py-2 bg-purple-300 rounded-xl" type="submit">delete</button>
+                        </form>
+                     </button>
+                     </div>
+            </div>
+             @endforeach
+            
+        </div>
     </body>
 </html>

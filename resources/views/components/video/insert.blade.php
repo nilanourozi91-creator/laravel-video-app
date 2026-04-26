@@ -6,21 +6,16 @@
             Add video
         </h1>
 
-        <form class="space-y-4 ">
-
-            <input type="text" placeholder="title"
+        <form action="{{URL('video/insert')}}" method="post" enctype="multipart/form-data"  class="space-y-4">
+               @csrf
+            <input type="text" placeholder="title" name="title"
                 class="w-full p-3 border rounded-lg  my-4  focus:outline-none focus:ring-2 focus:ring-blue-400">
                 <!-- video url -->
-                 <input type="file" placeholder="video_url"
+                 <input type="file" placeholder="video_url" name="file_path"
                 class="w-full p-3  my-4  border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-                         <!-- selact -->
-                    <select name="" id="" class=" my-4 w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-                     <option value="">k-drama</option>
-                     <option value="">k-drama</option>
-                     <option value="">k-drama</option>
-                    </select>
+            
                 <!-- your description -->
-            <textarea rows="5" placeholder="description"
+            <textarea rows="5" name="description" placeholder="description"
                 class="w-full p-3 border rounded-lg  my-4  focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
 
             <!-- Button -->
