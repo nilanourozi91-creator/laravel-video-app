@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\video;
+use FFMpeg\FFMpeg;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
+use Illuminate\Support\Facades\Storage;
 
 use function Laravel\Prompts\table;
 
@@ -26,9 +28,11 @@ class VideoController extends Controller
     if ($request->hasFile('file_path')) {
         $pathfile = $request->file('file_path')->store('videos', 'public');
     }
-
+       $pathfile = $request->file('file_path')->store('videos', 'public');
+    // $duration = FFMpeg::fromdisk('public')->open($pathfile)->getDurationInSeconds();
+    // $vi->duration = $duration;
     $vi->title = $request->title;
-    $vi->file_path = $pathfile; // ✅ FIXED
+    $vi->file_path = $pathfile;
     $vi->description = $request->description;
     
     $vi->save();
@@ -55,9 +59,18 @@ class VideoController extends Controller
        return redirect('/');
       }
 
-      public function delete( string $id){
-          video::findOrfail($id)->delete();
-          return redirect('/');
-      }
+        public function delete($id)
+    {
+        $video = video::findOrFail($id);
+
+        // Delete file from storage
+        if ($video->file_path && Storage::disk('public')->exists($video->file_path)) {
+            Storage::disk('public')->delete($video->file_path);
+        }
+
+        $video->delete();
+
+        return redirect('/');
+    }
 
 }
